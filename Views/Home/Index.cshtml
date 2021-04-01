@@ -1,8 +1,25 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using System.Globalization
+@{
+    ViewData["Title"] = "Prochaine fermeture";
 }
+@{
+    Model.Sort((a, b) => a.closing_date.CompareTo(b.closing_date));
+
+}
+@{ 
+    var currentTime = DateTime.Now.TimeOfDay;
+}
+@model List<Temps>
+
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Prochaine fermeture</h1>
+    <p>Prochaine fermeture : @Model.OrderBy(x => Math.Abs(currentTime.Ticks - x.closing_date.Ticks)).FirstOrDefault(); </p>
 </div>
+
+<ul>
+    @foreach (var fermeture in Model)
+    {
+        <li>@fermeture.closing_date @fermeture.closing_date.DayOfWeek</li>
+    }
+</ul>  
