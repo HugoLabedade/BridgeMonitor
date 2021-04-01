@@ -4,7 +4,18 @@
 }
 @{
     Model.Sort((a, b) => a.closing_date.CompareTo(b.closing_date));
-
+    Temps list = new Temps();
+    List<DateTime> list2 = new List<DateTime>();
+    var dateNow = Convert.ToDateTime(DateTime.Now.ToString());
+    foreach (var date in Model)
+    {
+        var dateExacte = Convert.ToDateTime(date.closing_date);
+        if (dateExacte > dateNow)
+        {
+            list = date;
+            break;
+        }
+    }
 }
 @{ 
     var currentTime = DateTime.Now.TimeOfDay;
@@ -14,12 +25,18 @@
 
 <div class="text-center">
     <h1 class="display-4">Prochaine fermeture</h1>
-    <p>Prochaine fermeture : @Model.OrderBy(x => Math.Abs(currentTime.Ticks - x.closing_date.Ticks)).FirstOrDefault(); </p>
+    <p>Prochaine fermeture :  @list.closing_date, @list.closing_date.DayOfWeek à cause de @list.boat_name </p>
+    <p>Durée de la fermeture : @Html.Raw(list.reopening_date - @list.closing_date)</p>
+    <p>Prochaine ouverture :  @list.reopening_date, @list.reopening_date.DayOfWeek</p>
 </div>
 
-<ul>
-    @foreach (var fermeture in Model)
+@{
+    int segundo = 0;
+    DateTime dt = new DateTime();
+
+    private void timer1_Tick(object sender, EventArgs e)
     {
-        <li>@fermeture.closing_date @fermeture.closing_date.DayOfWeek</li>
+        segundo++;
+        label1.Text = dt.AddSeconds(segundo).ToString("HH:mm:ss");
     }
-</ul>  
+}
