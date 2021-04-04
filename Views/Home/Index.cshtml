@@ -1,4 +1,5 @@
-﻿@using System.Globalization
+﻿@using System.Globalization;
+@using System;
 @{
     ViewData["Title"] = "Prochaine fermeture";
 }
@@ -25,18 +26,27 @@
 
 <div class="text-center">
     <h1 class="display-4">Prochaine fermeture</h1>
-    <p>Prochaine fermeture :  @list.closing_date, @list.closing_date.DayOfWeek à cause de @list.boat_name </p>
+    <p>Prochaine fermeture : @list.closing_date, @list.closing_date.DayOfWeek à cause de @list.boat_name </p>
     <p>Durée de la fermeture : @Html.Raw(list.reopening_date - @list.closing_date)</p>
     <p>Prochaine ouverture :  @list.reopening_date, @list.reopening_date.DayOfWeek</p>
 </div>
 
-@{
-    int segundo = 0;
-    DateTime dt = new DateTime();
-
-    private void timer1_Tick(object sender, EventArgs e)
-    {
-        segundo++;
-        label1.Text = dt.AddSeconds(segundo).ToString("HH:mm:ss");
-    }
-}
+<div class="text-center">   
+    <p>
+        Risque de bouchon : 
+        
+           @if (list.closing_date.Hour.Equals(7) ||
+               list.closing_date.Hour.Equals(8) ||
+               list.closing_date.Hour.Equals(9) || 
+               list.closing_date.Hour.Equals(17) ||
+               list.closing_date.Hour.Equals(18) ||
+               list.closing_date.Hour.Equals(19))
+            {
+                <text>élevé</text>;
+            }
+            else
+            {
+                <text>faible</text>;
+            }
+    </p>
+</div>

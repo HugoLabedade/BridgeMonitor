@@ -23,6 +23,8 @@ namespace BridgeMonitor.Controllers
             _logger = logger;
         }
 
+
+
         public IActionResult Index()
         {
             var horaires = GetTimerFromApi();
@@ -47,9 +49,10 @@ namespace BridgeMonitor.Controllers
         }
 
 
-        public IActionResult Privacy()
+        public IActionResult ToutesLesFermetures()
         {
-            return View();
+            var horaires = GetTimerFromApi();
+            return View(horaires);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -58,5 +61,7 @@ namespace BridgeMonitor.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
+
 
 }
