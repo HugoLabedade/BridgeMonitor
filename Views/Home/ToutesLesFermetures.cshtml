@@ -1,46 +1,58 @@
 @{
     ViewData["Title"] = "Toutes les fermetures";
 }
-<h1>@ViewData["Title"]</h1>
 
 @model List<Temps>
 @{
     Model.Sort((a, b) => a.closing_date.CompareTo(b.closing_date));
 }
-
-<div style="float:left">
-    <table>
-        <tr>
-            <th>Fermetures a venir</th>
-        </tr>
-        @foreach (var item in Model)
-        {
-            if (item.closing_date > DateTime.Now)
-            {
-
+<div style="height:auto">
+    <div style="float: left">
+        <h1>Fermetures a venir</h1>
+        <table>
+            <thead>
                 <tr>
-                    <td style="padding-right:50px">@item.closing_date</td>
-                    <td>@item.boat_name</td>
-                    <td>ekip</td>
+                    <th>Fermeture</th>
+                    <th>Cause</th>
+                    <th>Timer</th>
                 </tr>
-            }
-        }
-    </table>
-</div>
-
-<div style="float:right">
-    <table>
-        <tr>
-            <th>Fermetures deja passees</th>
-        </tr>
-        @foreach (var item in Model)
-        {
-            if (item.closing_date < DateTime.Now)
+            </thead>
+            @foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.closing_date</td>
-                </tr>
+                if (item.closing_date > DateTime.Now)
+                {
+
+                    <tr>
+                        <td style="padding-right:50px">@item.closing_date</td>
+                        <td>@item.boat_name</td>
+                        <td>@Html.Raw(item.reopening_date - @item.closing_date)</td>
+                    </tr>
+                }
             }
-        }
-    </table>
+        </table>
+    </div>
+
+    <div style="float: right">
+        <h1>Fermetures deja passees</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fermeture</th>
+                    <th>Cause</th>
+                    <th>Timer</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                if (item.closing_date < DateTime.Now)
+                {
+                    <tr>
+                        <td style="padding-right:50px">@item.closing_date</td>
+                        <td>@item.boat_name</td>
+                        <td>@Html.Raw(item.reopening_date - @item.closing_date)</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
 </div>
